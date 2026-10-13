@@ -27,6 +27,7 @@ func main() {
 	// Appliquer les règles
 	words = convertHex(words)
 	words = convertBin(words)
+	words = convertUp(words)
 
 	// Recoller les mots et écrire le résultat
 	result := strings.Join(words, " ")
@@ -68,6 +69,34 @@ func convertBin(words []string) []string {
 			}
 			words = append(words[:i], words[i+1:]...)
 			i--
+		}
+	}
+	return words
+}
+
+// convertUp met en majuscules le mot avant "(up)",
+// ou les n mots avant "(up, n)", puis supprime le marqueur
+func convertUp(words []string) []string {
+	for i := 0; i < len(words); i++ {
+		if words[i] == "(up)" {
+			// Cas simple : un seul mot
+			if i > 0 {
+				words[i-1] = strings.ToUpper(words[i-1])
+			}
+			words = append(words[:i], words[i+1:]...)
+			i--
+		} else if words[i] == "(up," && i+1 < len(words) {
+			// Cas avec nombre : "(up," puis "2)" dans le mot suivant
+			n, err := strconv.Atoi(strings.TrimSuffix(words[i+1], ")"))
+			if err == nil {
+				// On remonte de i-1 jusqu'à i-n sans sortir du tableau
+				for j := i - 1; j >= 0 && j >= i-n; j-- {
+					words[j] = strings.ToUpper(words[j])
+				}
+				// On supprime les deux morceaux : "(up," et "2)"
+				words = append(words[:i], words[i+2:]...)
+				i--
+			}
 		}
 	}
 	return words
