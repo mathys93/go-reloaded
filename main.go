@@ -26,6 +26,7 @@ func main() {
 
 	// Appliquer les règles
 	words = convertHex(words)
+	words = convertBin(words)
 
 	// Recoller les mots et écrire le résultat
 	result := strings.Join(words, " ")
@@ -43,6 +44,24 @@ func convertHex(words []string) []string {
 		if words[i] == "(hex)" {
 			if i > 0 {
 				n, err := strconv.ParseInt(words[i-1], 16, 64)
+				if err == nil {
+					words[i-1] = strconv.FormatInt(n, 10)
+				}
+			}
+			words = append(words[:i], words[i+1:]...)
+			i--
+		}
+	}
+	return words
+}
+
+// convertBin remplace le mot avant "(bin)" par sa valeur décimale
+// et supprime le marqueur "(bin)"
+func convertBin(words []string) []string {
+	for i := 0; i < len(words); i++ {
+		if words[i] == "(bin)" {
+			if i > 0 {
+				n, err := strconv.ParseInt(words[i-1], 2, 64)
 				if err == nil {
 					words[i-1] = strconv.FormatInt(n, 10)
 				}
