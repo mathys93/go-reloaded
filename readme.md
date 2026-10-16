@@ -67,18 +67,6 @@ Dans tous les cas, le marqueur est supprimé du texte final.
 
 Pour supprimer un marqueur de la liste, le programme utilise `append(words[:i], words[i+1:]...)`, puis recule l'index (`i--`) pour ne pas sauter le mot suivant.
 
-## Limites actuelles
-
-- Les retours à la ligne du fichier d'entrée ne sont pas conservés : le résultat est écrit sur une seule ligne.
-- Un marqueur collé à une ponctuation (par exemple `(hex),`) n'est pas reconnu.
-
-## Reste à faire
-
-- Formatage de la ponctuation `.` `,` `!` `?` `:` `;` (collée au mot précédent, suivie d'un espace), y compris les groupes comme `...` ou `!?`.
-- Placement des apostrophes `' '` autour des mots qu'elles encadrent.
-- Remplacement de `a` par `an` devant un mot commençant par une voyelle ou un `h`.
-- Tests unitaires (`main_test.go`).
-
 ## Structure du projet
 
 ```
